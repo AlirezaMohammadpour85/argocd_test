@@ -6,12 +6,12 @@ terraform {
     }
   }
 }
-# Exposed ArgoCD API - authenticated using `username`/`password`
+
 provider "argocd" {
-  server_addr = "localhost:8080"
-  username    = "admin"
-  password    = "5vUyYW0gGfRUAnet"
-  insecure    = true
+  server_addr = var.argocd_server_addr
+  username    = var.argocd_username
+  password    = var.argocd_password
+  insecure    = var.argocd_insecure
 }
 
 resource "argocd_application" "app1_tf" {
@@ -26,7 +26,7 @@ resource "argocd_application" "app1_tf" {
     source {
       repo_url        = "https://github.com/AlirezaMohammadpour85/argocd_test.git"
       target_revision = "main"
-      path            = "app1"
+      path            = "apps/app1"
     }
 
     destination {
@@ -40,7 +40,6 @@ resource "argocd_application" "app1_tf" {
         self_heal = true
       }
       sync_options = ["CreateNamespace=true"]
-
     }
   }
 }

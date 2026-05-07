@@ -15,12 +15,16 @@ The current application is a simple NGINX workload. It is useful for testing the
 
 ```text
 argocd_test/
-├── app1/
-│   ├── nginx.yml
-│   ├── nginx_svc.yml
-│   └── argo_app.yml
+├── apps/
+│   └── app1/
+│       ├── deployment.yaml
+│       └── service.yaml
+├── argocd/
+│   └── app1-application.yaml
 ├── terraform_argocd/
 │   ├── provider.tf
+│   ├── variables.tf
+│   ├── terraform.tfvars.example
 │   └── .terraform.lock.hcl
 ├── README.md
 ├── .gitignore
@@ -31,11 +35,10 @@ argocd_test/
 
 ### Kubernetes application
 
-The application manifests live in `app1/`.
+The application manifests live in `apps/app1/`.
 
-- `nginx.yml` creates an NGINX `Deployment`.
-- `nginx_svc.yml` exposes the deployment with a `ClusterIP` service.
-- `argo_app.yml` defines an Argo CD `Application` that points Argo CD to this repository path.
+- `deployment.yaml` creates an NGINX `Deployment`.
+- `service.yaml` exposes the deployment with a `ClusterIP` service.
 
 ### Argo CD
 
@@ -45,7 +48,7 @@ The current Argo CD application points to:
 
 ```text
 repo: https://github.com/AlirezaMohammadpour85/argocd_test.git
-path: app1
+path: apps/app1
 target revision: main
 destination namespace: default
 ```
@@ -58,7 +61,7 @@ This allows the Argo CD application itself to be managed as infrastructure as co
 
 ## Typical workflow
 
-1. Update Kubernetes manifests in `app1/`.
+1. Update Kubernetes manifests in `apps/app1/`.
 2. Commit and push changes to GitHub.
 3. Argo CD detects the Git change.
 4. Argo CD syncs the change into Kubernetes.
@@ -76,6 +79,7 @@ For Terraform:
 
 ```bash
 cd terraform_argocd
+cp terraform.tfvars.example terraform.tfvars
 terraform init
 terraform plan
 terraform apply
@@ -85,9 +89,9 @@ terraform apply
 
 As this project grows, use this roadmap to keep it clean and scalable.
 
-### 1. Separate applications from Argo CD definitions
+### 1. Keep applications separate from Argo CD definitions
 
-Recommended future layout:
+Current recommended layout:
 
 ```text
 argocd_test/
@@ -143,7 +147,7 @@ Example commands:
 ```bash
 terraform fmt -check
 terraform validate
-kubectl apply --dry-run=client -f app1/
+kubectl apply --dry-run=client -f apps/app1/
 ```
 
 ### 5. Add release discipline

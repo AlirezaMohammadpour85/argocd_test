@@ -154,7 +154,7 @@ Avoid putting the Argo CD `Application` YAML inside the same folder that Argo CD
 Avoid this for now:
 
 ```text
-app1/
+apps/app1/
 ├── deployment.yaml
 ├── service.yaml
 └── app1-application.yaml
@@ -164,7 +164,7 @@ If your Argo CD Application has:
 
 ```yaml
 source:
-  path: app1
+  path: apps/app1
 ```
 
 then Argo CD will also try to sync the `Application` object itself.
