@@ -1,4 +1,0 @@
-argocd_server_addr = "localhost:8080"
-argocd_username    = "admin"
-argocd_password    = "5vUyYW0gGfRUAnet"
-argocd_insecure    = true

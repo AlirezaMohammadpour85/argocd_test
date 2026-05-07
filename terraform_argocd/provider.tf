@@ -26,7 +26,7 @@ resource "argocd_application" "app1_tf" {
     source {
       repo_url        = "https://github.com/AlirezaMohammadpour85/argocd_test.git"
       target_revision = "main"
-      path            = "apps/app1"
+      path            = "app1"
     }
 
     destination {
